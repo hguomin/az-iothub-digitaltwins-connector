@@ -10,7 +10,7 @@ Add Azure Event Hub binder dependency to pom.xml
 </dependency>
 ```
 
-# Add IoT Hub message receiver code
+## Add IoT Hub message receiver code
 ```java
 package com.azure.aziothubdigitaltwinsconnector;
 
