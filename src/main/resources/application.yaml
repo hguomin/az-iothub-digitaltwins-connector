@@ -1,0 +1,17 @@
+spring:
+  cloud:
+    azure:
+      eventhub:
+        connection-string:
+        checkpoint-storage-account: gmdtstorage
+        checkpoint-access-key:
+        checkpoint-container: iothubcheckpoints
+
+    stream:
+      bindings:
+        receive-in-0:
+          destination: gm-dt-iothub
+          group: $Default
+
+      function:
+        definition: receive;
