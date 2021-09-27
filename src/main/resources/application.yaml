@@ -2,9 +2,9 @@ spring:
   cloud:
     azure:
       eventhub:
-        connection-string:
+        connection-string: Endpoint=sb://iothub-ns-gm-dt-ioth-14806801-c09448f99d.servicebus.windows.net/;SharedAccessKeyName=iothubowner;SharedAccessKey=ibEaXIey8Dhf4/fmGPUZzUrEPYf3/p0zceFSVzDmzkU=;EntityPath=gm-dt-iothub
         checkpoint-storage-account: gmdtstorage
-        checkpoint-access-key:
+        checkpoint-access-key: jRAzflUQWoRxkVAzCmu0d37zl17aLP3kiqe/d1VdL8MAmsX0+VJ3/ZwQ7XhuUFNH8w1vxTSV7amFeGE3aTwUbg==
         checkpoint-container: iothubcheckpoints
 
     stream:

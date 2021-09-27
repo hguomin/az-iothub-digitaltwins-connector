@@ -8,6 +8,7 @@ public class AzIothubDigitaltwinsConnectorApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AzIothubDigitaltwinsConnectorApplication.class, args);
+
 	}
 
 }
