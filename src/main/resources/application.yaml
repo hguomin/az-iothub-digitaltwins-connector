@@ -2,16 +2,16 @@ spring:
   cloud:
     azure:
       eventhub:
-        connection-string: Endpoint=sb://iothub-ns-gm-dt-ioth-14806801-c09448f99d.servicebus.windows.net/;SharedAccessKeyName=iothubowner;SharedAccessKey=ibEaXIey8Dhf4/fmGPUZzUrEPYf3/p0zceFSVzDmzkU=;EntityPath=gm-dt-iothub
-        checkpoint-storage-account: gmdtstorage
-        checkpoint-access-key: jRAzflUQWoRxkVAzCmu0d37zl17aLP3kiqe/d1VdL8MAmsX0+VJ3/ZwQ7XhuUFNH8w1vxTSV7amFeGE3aTwUbg==
-        checkpoint-container: iothubcheckpoints
+        connection-string: [YOUR EVENT HUB CONNECTION STRING]
+        checkpoint-storage-account: [YOUR STORAGE ACCOUNT NAME]
+        checkpoint-access-key: [YOUR STORAGE ACCOUNT ACCESS KEY]
+        checkpoint-container: [YOUR STORAGE ACCOUNT CONTAINER FOR CHECKPOINT]
 
     stream:
       bindings:
         receive-in-0:
-          destination: gm-dt-iothub
-          group: $Default
+          destination: [EVENT HUB NAME]
+          group: [EVENT HUB CONSUMER GROUP]
 
       function:
-        definition: receive;
+        definition: [FUNCTION NAME];[OTHER FUNCTION NAME];
