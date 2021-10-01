@@ -1,0 +1,28 @@
+  application.debug.yaml# Azure multiple eventhub binders configuration sample
+# https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/eventhubs/azure-spring-cloud-stream-binder-eventhubs/eventhubs-multibinders
+spring:
+  cloud:
+    stream:
+      binders:
+        iothub-builtin-endpoint:
+          type: eventhub
+          default-candidate: false
+          environment:
+            spring:
+              cloud:
+                azure:
+                  eventhub:
+                    connection-string: [EVENT HUB CONNECTION STRING]
+                    checkpoint-storage-account: gmdtstorage
+                    checkpoint-access-key: [STORAGE ACCOUNT ACCESS KEY]
+                    checkpoint-container: iothubcheckpoints
+      function:
+        definition: receive;
+      bindings:
+        receive-in-0:
+          binder: iothub-builtin-endpoint
+          destination: gm-dt-iothub
+          group: $Default
+
+
+

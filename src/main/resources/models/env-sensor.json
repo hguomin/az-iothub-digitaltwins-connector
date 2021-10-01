@@ -1,0 +1,61 @@
+{
+  "@id": "dtmi:io:devplus:sensors:env;1",
+  "@type": "Interface",
+  "contents": [
+    {
+      "@type": ["Property", "Name"],
+      "displayName": {
+        "en": "Sensor Name"
+      },
+      "name": "name",
+      "schema": "string",
+      "writable": true
+    },
+    {
+      "@type": ["Property", "Temperature"],
+      "displayName": {
+        "en": "Temperature property"
+      },
+      "name": "avgTemperature",
+      "schema": "double",
+      "unit": "degreeCelsius",
+      "writable": true
+    },
+    {
+      "@type": ["Telemetry", "Temperature"],
+      "displayName": {
+        "en": "Temperature"
+      },
+      "name": "temperature",
+      "schema": "double",
+      "unit": "degreeCelsius"
+    },
+    {
+      "@type": ["Telemetry", "Humidity"],
+      "displayName": {
+        "en": "Humidity"
+      },
+      "name": "humidity",
+      "schema": "double",
+      "unit": "gramPerCubicMetre"
+    },
+    {
+      "@type": "Relationship",
+      "displayName": {
+        "en": "Installed At"
+      },
+      "description": {
+        "en": "Indicates where this sensor is installed."
+      },
+      "name": "installedAt",
+      "writable": true
+    }
+  ],
+  "description": {
+    "en": "A sensor that collects the temperature and humidity in a specific physical environment."
+  },
+  "displayName": {
+    "en": "Environment Sensor"
+  },
+  "@context": "dtmi:dtdl:context;2"
+}

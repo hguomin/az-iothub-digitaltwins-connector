@@ -1,17 +1,29 @@
+# Azure multiple eventhub binders configuration sample
+# https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/eventhubs/azure-spring-cloud-stream-binder-eventhubs/eventhubs-multibinders
+
 spring:
   cloud:
-    azure:
-      eventhub:
-        connection-string: [YOUR EVENT HUB CONNECTION STRING]
-        checkpoint-storage-account: [YOUR STORAGE ACCOUNT NAME]
-        checkpoint-access-key: [YOUR STORAGE ACCOUNT ACCESS KEY]
-        checkpoint-container: [YOUR STORAGE ACCOUNT CONTAINER FOR CHECKPOINT]
-
     stream:
+      binders:
+        [SET THIS BINDER NAME]
+          type: eventhub
+          default-candidate: false
+          environment:
+            spring:
+              cloud:
+                azure:
+                  eventhub:
+                    connection-string: [EVENT HUB CONNECTION STRING]
+                    checkpoint-storage-account: [STORAGE ACCOUNT NAME]
+                    checkpoint-access-key: [STORAGE ACCOUNT ACCESS KEY]
+                    checkpoint-container: [STORAGE ACCOUNT CONTAINER FOR CHECKPOINT]
+      function:
+        definition: [FUNCTION1's NAME];[FUNCTION2's NAME];[MORE FUNCTIONS's NAME];
       bindings:
-        receive-in-0:
+        [ONE OF FUNCTION NAME LISTED IN spring.cloud.stream.function.definition]-[in/out]-[0/1/...]:
+          binder: [ONE OF THE BINDER NAME LISTED IN spring.cloud.stream.binders]
           destination: [EVENT HUB NAME]
           group: [EVENT HUB CONSUMER GROUP]
 
-      function:
-        definition: [FUNCTION NAME];[OTHER FUNCTION NAME];
+
+

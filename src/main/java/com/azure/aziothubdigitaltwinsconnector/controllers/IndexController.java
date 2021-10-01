@@ -17,28 +17,17 @@ import com.azure.digitaltwins.core.DigitalTwinsClient;
 @RequestMapping("/")
 public class IndexController {
 
-    private DigitalTwinsClient digitalTwinsClient; 
+    final DigitalTwinsClient digitalTwinsClient;
 
+    @Autowired
+    public IndexController(DigitalTwinsClient digitalTwinsClient) {
+        this.digitalTwinsClient = digitalTwinsClient;
+    }
     @GetMapping
     public String index() {
-        String tenantId = "c8006b8a-cb84-4197-bdfa-ddce719bd36d";
-        String clientId = "65379042-8ac0-4ef5-badf-951d09f4f8df";
-        String clientSecret = "VhA7Q~HSonaOfJreZDUSYY4OTKNNc6Zb~XZO2";
-        String adtEndpoint = "https://gmadt.api.sea.digitaltwins.azure.net";
-
-        digitalTwinsClient = new DigitalTwinsClientBuilder()
-                .credential(new ClientSecretCredentialBuilder()
-                        .tenantId(tenantId)
-                        .clientId(clientId)
-                        .clientSecret(clientSecret)
-                        .build())
-                .endpoint(adtEndpoint)
-                .buildClient();
-        DigitalTwinsServiceVersion adtVersion = digitalTwinsClient.getServiceVersion();
-        System.out.println(adtVersion.getVersion());
-
         try{
             DigitalTwinsModelData model = digitalTwinsClient.getModel("dtmi:example:Room;1");
+
             System.out.println(model.getModelId());
         }
         catch (Exception e){

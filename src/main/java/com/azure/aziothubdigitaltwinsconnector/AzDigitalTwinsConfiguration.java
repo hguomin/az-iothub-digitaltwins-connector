@@ -1,3 +1,7 @@
+// Copyright (c) Guomin Huang. All rights reserved.
+// Licensed under the MIT License.
+// 09/29/2021
+
 package com.azure.aziothubdigitaltwinsconnector;
 
 import com.azure.digitaltwins.core.DigitalTwinsClient;
@@ -6,17 +10,12 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.function.Consumer;
-
 @Configuration
-public class AzIoTHubMessageReceiver {
-    @Bean
-    Consumer<String> receive() {
-        return message -> {
-            System.out.println("Azure IoT Hub: " + message);
-        };
-    }
-/*
+public class AzDigitalTwinsConfiguration {
+
+    /**
+     * Inject DigitalTwinsClient bean
+     */
     @Bean
     DigitalTwinsClient digitalTwinsClient() {
         String tenantId = "c8006b8a-cb84-4197-bdfa-ddce719bd36d";
@@ -33,5 +32,4 @@ public class AzIoTHubMessageReceiver {
                 .endpoint(adtEndpoint)
                 .buildClient();
     }
- */
 }
