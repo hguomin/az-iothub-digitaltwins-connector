@@ -1,5 +1,6 @@
 package com.azure.aziothubdigitaltwinsconnector.controllers;
 
+import com.azure.aziothubdigitaltwinsconnector.AzIothubDigitaltwinsConnectorApplication;
 import com.azure.digitaltwins.core.DigitalTwinsClient;
 import com.azure.digitaltwins.core.DigitalTwinsClientBuilder;
 import com.azure.digitaltwins.core.DigitalTwinsServiceVersion;
@@ -9,6 +10,7 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.azure.digitaltwins.core.DigitalTwinsClient;
@@ -21,8 +23,10 @@ public class IndexController {
 
     @Autowired
     public IndexController(DigitalTwinsClient digitalTwinsClient) {
+
         this.digitalTwinsClient = digitalTwinsClient;
     }
+
     @GetMapping
     public String index() {
         try{
@@ -34,6 +38,13 @@ public class IndexController {
             System.out.println(e.toString());
         }
 
+        return "index";
+    }
+
+    //For test
+    @GetMapping("/restart")
+    public String restart() {
+        AzIothubDigitaltwinsConnectorApplication.restart();
         return "index";
     }
 }

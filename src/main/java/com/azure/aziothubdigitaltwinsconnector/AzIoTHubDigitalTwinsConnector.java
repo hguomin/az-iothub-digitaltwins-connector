@@ -73,7 +73,12 @@ public class AzIoTHubDigitalTwinsConnector {
                 String dt = digitalTwinsClient.getDigitalTwin(twinId, String.class);
                 System.out.println(dt);
             }
+        };
+    }
 
+    @Bean
+    public Consumer<String> telemetry() {
+        return message -> {
             System.out.println("Azure IoT Hub: " + message);
         };
     }

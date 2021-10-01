@@ -5,7 +5,7 @@ spring:
   cloud:
     stream:
       binders:
-        [SET THIS BINDER NAME]
+        iothub-builtin-endpoint:
           type: eventhub
           default-candidate: false
           environment:
@@ -13,17 +13,19 @@ spring:
               cloud:
                 azure:
                   eventhub:
-                    connection-string: [EVENT HUB CONNECTION STRING]
-                    checkpoint-storage-account: [STORAGE ACCOUNT NAME]
-                    checkpoint-access-key: [STORAGE ACCOUNT ACCESS KEY]
-                    checkpoint-container: [STORAGE ACCOUNT CONTAINER FOR CHECKPOINT]
+                    connection-string: [AZURE EVENT HUB/IOT HUB BUILTIN ENDPOINT CONNECTION STRING]
+                    checkpoint-storage-account: [AZURE STORAGE ACCOUNT NAME]
+                    checkpoint-access-key: [AZURE STORAGE ACCOUNT ACCESS KEY]
+                    checkpoint-container: iothubcheckpoints
       function:
-        definition: [FUNCTION1's NAME];[FUNCTION2's NAME];[MORE FUNCTIONS's NAME];
+        definition: receive;telemetry;
       bindings:
-        [ONE OF FUNCTION NAME LISTED IN spring.cloud.stream.function.definition]-[in/out]-[0/1/...]:
-          binder: [ONE OF THE BINDER NAME LISTED IN spring.cloud.stream.binders]
-          destination: [EVENT HUB NAME]
-          group: [EVENT HUB CONSUMER GROUP]
+        receive-in-0:
+          binder: iothub-builtin-endpoint
+          destination: gm-dt-iothub
+          group: $Default
 
-
-
+        telemetry-in-0:
+          binder: iothub-builtin-endpoint
+          destination: gm-dt-iothub
+          group: telemetry
