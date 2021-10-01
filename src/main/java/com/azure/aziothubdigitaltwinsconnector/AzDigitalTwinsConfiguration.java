@@ -18,10 +18,10 @@ public class AzDigitalTwinsConfiguration {
      */
     @Bean
     DigitalTwinsClient digitalTwinsClient() {
-        String tenantId = "c8006b8a-cb84-4197-bdfa-ddce719bd36d";
-        String clientId = "65379042-8ac0-4ef5-badf-951d09f4f8df";
-        String clientSecret = "LiH7Q~F4hlGN50Kkg9m0IQw_IEiW1cSxLaGRV";
-        String adtEndpoint = "https://gmadt.api.sea.digitaltwins.azure.net";
+        String tenantId = "";
+        String clientId = "";
+        String clientSecret = "";
+        String adtEndpoint = "";
 
         return new DigitalTwinsClientBuilder()
                 .credential(new ClientSecretCredentialBuilder()
