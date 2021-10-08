@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import com.azure.digitaltwins.core.DigitalTwinsClient;
+import org.springframework.messaging.Message;
 
 @SpringBootApplication
 public class AzIoTHubDigitalTwinsConnector {
@@ -42,44 +43,56 @@ public class AzIoTHubDigitalTwinsConnector {
     @Bean
     Consumer<String> receive(DigitalTwinsClient digitalTwinsClient) {
         return message -> {
-            ReadContext msgCtx = JsonPath.parse(message);
-            String twinIdQueryString = this.mapping.read("$.twinId");
-            String twinId = (String) this.queryDataFromJson(msgCtx, twinIdQueryString);
-            if (StringUtils.isNotEmpty(twinId)) {
-                Map<String, Object> mappings = this.mapping.read("$.mappings");
-                if (null != mappings) {
-                    mappings.forEach((k,v) -> {
-                        HashMap<String, Object> mapping = (HashMap<String, Object>)v;
-                        if (StringUtils.equals(k, "Telemetry")) {
+            try {
+                ReadContext msgCtx = JsonPath.parse(message);
+                String twinIdQueryString = this.mapping.read("$.twinId");
+                String twinId = (String) this.queryDataFromJson(msgCtx, twinIdQueryString);
+                if (StringUtils.isNotEmpty(twinId)) {
+                    Map<String, Object> mappings = this.mapping.read("$.mappings");
+                    if (null != mappings) {
+                        mappings.forEach((k, v) -> {
+                            HashMap<String, Object> mapping = (HashMap<String, Object>) v;
+                            if (StringUtils.equals(k, "Telemetry")) {
 
-                            HashMap<String, Object> telemetryPayload = new HashMap<>();
-                            mapping.forEach((mk, mv) -> {
-                                Object data = this.queryDataFromJson(msgCtx, (String) mv);
-                                telemetryPayload.put(mk, data);
-                            });
+                                HashMap<String, Object> telemetryPayload = new HashMap<>();
+                                mapping.forEach((mk, mv) -> {
+                                    Object data = this.queryDataFromJson(msgCtx, (String) mv);
+                                    telemetryPayload.put(mk, data);
+                                });
 
-                            digitalTwinsClient.publishTelemetry(twinId, null, telemetryPayload);
-                        }
-                        else if (StringUtils.equals(k, "Property")) {
-                            JsonPatchDocument propOp = new JsonPatchDocument();
-                            mapping.forEach((mk, mv) -> {
-                                Object data = this.queryDataFromJson(msgCtx, (String) mv);
-                                propOp.appendReplace("/avgTemperature", data);
-                            });
-                            digitalTwinsClient.updateDigitalTwin(twinId, propOp);
-                        }
-                    });
+                                digitalTwinsClient.publishTelemetry(twinId, null, telemetryPayload);
+                            } else if (StringUtils.equals(k, "Property")) {
+                                JsonPatchDocument propOp = new JsonPatchDocument();
+                                mapping.forEach((mk, mv) -> {
+                                    Object data = this.queryDataFromJson(msgCtx, (String) mv);
+                                    propOp.appendReplace("/avgTemperature", data);
+                                });
+                                digitalTwinsClient.updateDigitalTwin(twinId, propOp);
+                            }
+                        });
+                    }
+                    String dt = digitalTwinsClient.getDigitalTwin(twinId, String.class);
+                    System.out.println(dt);
                 }
-                String dt = digitalTwinsClient.getDigitalTwin(twinId, String.class);
-                System.out.println(dt);
+            }
+            catch(Exception e){
+                System.out.println("Error occurs while processing events from Azure IoT Hub: " + e.getMessage());
+                System.out.println("Message is : " + message);
             }
         };
     }
 
     @Bean
-    public Consumer<String> telemetry() {
+    public Consumer<String> deviceTelemetryReceiver() {
         return message -> {
             System.out.println("Azure IoT Hub: " + message);
+        };
+    }
+
+    @Bean
+    public Consumer<Message<String>> adtEventsOuputReceiver() {
+        return message -> {
+            System.out.println("Azure Digital Twins - Event Routed: " + message.getPayload());
         };
     }
 }

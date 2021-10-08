@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Device Simulation</title>
+
+</head>
+<body>
+
+    <div id="content">this is the device simulation page</div>
+    <div style="width: 100%">
+        <label style="display: block">
+            Device Id: <input type="text" id="deviceId" th:value="${deviceId}">
+        </label>
+        <label style="display: block">
+            Device Key: <input type="text" id="deviceKey" th:value="${devicePrimaryKey}" disabled style="width: auto">
+        </label>
+        <label style="display: block">
+            Device SAS Token: <input type="text" id="deviceSasToken", th:value="${deviceSasToken}" disabled>
+        </label>
+        <button id="startSimulation">Start Simulation</button>
+    </div>
+
+    <div id="messageBox" style="display: table; overflow:auto; width: 800px; height: 400px">
+        <p style="display: table-caption">Messages:</p>
+    </div>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/mqtt@4.2.8/dist/mqtt.js"></script>
+
+    <script type="text/javascript">
+
+        $(function (){
+            $("#startSimulation").click((e) => {
+                const deviceId = $("#deviceId").val();  //"device1"
+                const deviceSasToken = $("#deviceSasToken").val();//"SharedAccessSignature sr=gm-dt-iothub.azure-devices.net%2Fdevices%2Fdevice1&sig=NplhWJ4G%2BUzK9wv4zY%2FCahDt0nTQhPUMGLfYA7ia9AY%3D&se=1637184578";
+                const C2D_MSG_TOPIC = "devices/" + deviceId + "/messages/devicebound/#";
+                const D2C_MSG_TOPIC = "devices/" + deviceId + "/messages/events/"
+                const host = "wss://gm-dt-iothub.azure-devices.net/$iothub/websocket?iothub-no-client-cert=true";
+                const options = {
+                    clientId: deviceId,
+                    username: "gm-dt-iothub.azure-devices.net/" + deviceId + "/?api-version=2018-06-30",
+                    password: deviceSasToken,
+
+                    keepalive: 230,
+                    clean: false,
+                };
+                let msgCount = 0;
+                console.log("Connecting to Azure IoT Hub...");
+                const client = mqtt.connect(host, options);
+
+                client.on("connect", options => {
+                    console.log("Device connected: ", deviceId);
+                    //Subscribe and receive c2d message
+                    client.subscribe(C2D_MSG_TOPIC, {qos: 0});
+
+                    //Send device to cloud telemetry messages
+                    setInterval( (client) => {
+                        let msg = {
+                            msgId : ++msgCount,
+                            deviceId: deviceId,
+                            temperature: 10,
+                            humidity: 20
+                        };
+                        let msgStr = JSON.stringify(msg);
+                        console.log("Sending data: " + msgStr);
+                        client.publish(D2C_MSG_TOPIC, msgStr, {qos: 0, retain: false});
+
+                        //Update UI
+                        $("#messageBox").append(`<span style="display: table-row">MSG-${msgCount}: ${msgStr}</span>`);
+
+                    }, 2000, client );
+
+                    $("#startSimulation").text("Device Running");
+                });
+
+                client.on("message", (topic, message, packet) => {
+                    console.log("Received Message: " + message.toString() + "\nOn topic: " + topic);
+                });
+
+                client.on("error", (err) => {
+                    console.log("Connection error: ", err);
+                    client.end();
+                });
+
+                client.on("reconnect", (err) => {
+                    console.log("Reconnecting...");
+                });
+            })
+
+        });
+    </script>
+</body>
+</html>

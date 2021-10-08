@@ -23,7 +23,6 @@ public class IndexController {
 
     @Autowired
     public IndexController(DigitalTwinsClient digitalTwinsClient) {
-
         this.digitalTwinsClient = digitalTwinsClient;
     }
 

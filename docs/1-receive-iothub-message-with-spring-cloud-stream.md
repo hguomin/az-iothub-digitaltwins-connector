@@ -56,6 +56,9 @@ Please note that the 'receive' in [receive-in-0] and function.definition.receive
   
 Now run the application you will receive iot hub message...
 
+## Support multiple Event Hub binders
+We will use this setup to receive telemetry from IoT Hub, and events from Azure Digital Twins Event Route by Event Hub.  
+Configuration see [Spring Cloud Azure Stream Binder for Multiple Event Hub Namespace](https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/eventhubs/azure-spring-cloud-stream-binder-eventhubs/eventhubs-multibinders).
 
 ## References  
 * [Produce/Consume Events with Spring Cloud Stream and Event Hub](https://medium.com/@aviadpines/produce-consume-events-with-spring-cloud-stream-and-event-hub-4b41fdc1a9f6)
