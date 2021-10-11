@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.azure.digitaltwins.core.DigitalTwinsClient;
 
@@ -27,7 +28,8 @@ public class IndexController {
     }
 
     @GetMapping
-    public String index() {
+    public String index(ModelAndView modelView) {
+        modelView.setViewName("devices");
         try{
             DigitalTwinsModelData model = digitalTwinsClient.getModel("dtmi:example:Room;1");
 
