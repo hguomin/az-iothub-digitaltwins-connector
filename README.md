@@ -1,5 +1,7 @@
 # az-iothub-digitaltwins-connector
 
+A demo project that shows how to build a Azure IoT and Digital Twins connected solution with open source frameworks like Spring Cloud Stream, MQTT.js etc.
+
 ## Build from source
 ### Clone source code from this repo  
 ```bash 
