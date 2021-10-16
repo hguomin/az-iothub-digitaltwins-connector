@@ -1,10 +1,11 @@
 package com.azure.aziothubdigitaltwinsconnector.controllers;
 
-import com.microsoft.azure.sdk.iot.device.exceptions.IotHubException;
 import com.microsoft.azure.sdk.iot.service.Device;
 import com.microsoft.azure.sdk.iot.service.IotHubConnectionString;
 import com.microsoft.azure.sdk.iot.service.RegistryManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
@@ -36,7 +36,18 @@ public class DevicesController {
         return "devices/index";
     }
 
-    @RequestMapping(value="/{deviceId}/simulate", method = RequestMethod.GET)
+    @MessageMapping("/ws-login")
+    @SendTo("/topic/message")
+    public String message(String msg) throws Exception {
+        return "Hello " + msg;
+    }
+
+    @RequestMapping(value = "/{deviceId}/telemetry", method = RequestMethod.GET)
+    public String telemety(Model model, @PathVariable("deviceId")String deviceId) {
+        return "devices/telemetry";
+    }
+
+    @RequestMapping(value = "/{deviceId}/simulate", method = RequestMethod.GET)
     public String simulate(Model model, @PathVariable("deviceId") String deviceId) {
         Device device = null;
         try {

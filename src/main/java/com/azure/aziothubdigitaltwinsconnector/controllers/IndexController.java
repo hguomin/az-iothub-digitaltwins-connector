@@ -2,19 +2,13 @@ package com.azure.aziothubdigitaltwinsconnector.controllers;
 
 import com.azure.aziothubdigitaltwinsconnector.AzIothubDigitaltwinsConnectorApplication;
 import com.azure.digitaltwins.core.DigitalTwinsClient;
-import com.azure.digitaltwins.core.DigitalTwinsClientBuilder;
-import com.azure.digitaltwins.core.DigitalTwinsServiceVersion;
 import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
 
-import com.azure.identity.ClientSecretCredentialBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.azure.digitaltwins.core.DigitalTwinsClient;
 
 @Controller
 @RequestMapping("/")
