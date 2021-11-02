@@ -1,0 +1,3 @@
+[submodule "libs/spring-cloud-stream-binder-websocket"]
+	path = libs/spring-cloud-stream-binder-websocket
+	url = https://github.com/hguomin/spring-cloud-stream-binder-websocket.git

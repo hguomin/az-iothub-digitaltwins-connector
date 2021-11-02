@@ -9,6 +9,8 @@ import com.azure.core.models.JsonPatchDocument;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ReadContext;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
@@ -21,6 +23,9 @@ import org.springframework.messaging.Message;
 
 @SpringBootApplication
 public class AzIoTHubDigitalTwinsConnector {
+
+    private Logger log = LoggerFactory.getLogger(AzIoTHubDigitalTwinsConnector.class);
+
     private final ReadContext mapping;
     public AzIoTHubDigitalTwinsConnector() {
         this.mapping = JsonPath.parse("{ \"twinId\": \"${$.deviceId}\",\"version\": 5, \"mappings\": { \"Telemetry\": { \"temperature\": \"${$.temperature}\"}, \"Property\": {\"avgTemperature\": \"${$.temperature}\"}}}");
@@ -91,6 +96,12 @@ public class AzIoTHubDigitalTwinsConnector {
     public Consumer<Message<String>> adtEventsOuputReceiver() {
         return message -> {
             System.out.println("Azure Digital Twins - Event Routed: " + message.getPayload());
+        };
+    }
+
+    @Bean Consumer<Message<String>> websocketTest() {
+        return message -> {
+            log.debug("Websocket message received: ", message.getPayload());
         };
     }
 }

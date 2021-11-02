@@ -30,9 +30,18 @@ spring:
                     checkpoint-storage-account: gmdtstorage #storage account name
                     checkpoint-access-key: [storage account access key]
                     checkpoint-container: dtevtroutehubcheckpoints #storage container name
+        websocket:
+          type: websocket
+          default-candidate: false
+        #  environment:
+          #  spring:
+          #    cloud:
+          #      websocket:
+          #        endpoint: /ws
+                
       #Functions
       function:
-        definition: receive;deviceTelemetryReceiver;adtEventsOuputReceiver;
+        definition: websocketTest;receive;deviceTelemetryReceiver;adtEventsOuputReceiver;
       #Channels
       bindings:
         receive-in-0:
@@ -50,6 +59,12 @@ spring:
           destination: gmdtevtroutehub #event hub name
           group: $Default
 
+        websocketTest-in-0:
+          binder: websocket
+          destination: websocket
+
+    websocket:
+      endpoint: /ws
   thymeleaf:
     cache: false
 

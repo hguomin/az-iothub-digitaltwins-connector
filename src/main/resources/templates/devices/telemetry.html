@@ -18,6 +18,18 @@
         
         <script type="text/javascript">
             $(function (){
+                var ws = new SockJS("/ws_sockjs");
+                ws.onopen = () => {
+                    console.log("connected.");
+                    ws.send("hello");
+                }
+                ws.onmessage = e => {
+                    console.log("message: " + e.data);
+                }
+                ws.onclose = () => {
+                    console.log("closed");
+                }
+                /*
                 var ws = new SockJS("/ws-broker");
                 stompClient = Stomp.over(ws);
                 stompClient.connect({}, frame => {
@@ -28,6 +40,7 @@
 
                     stompClient.send("/app/ws-login", {}, "Wangwang");
                 });
+                */
             });
         </script>
     </th:block>
