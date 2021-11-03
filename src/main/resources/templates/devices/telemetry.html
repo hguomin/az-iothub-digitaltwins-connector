@@ -7,28 +7,101 @@
 <body>
     <div th:fragment="content" id="content" class="flex flex-auto bg-gray-100">
         <div id="messageBox" style="display: table;" class="px-4 py-3">
-            <p style="display: table-caption">Messages:</p>
+            <!--canvas id="deviceTelemetryChart"></canvas-->
         </div>
     </div>
 
     <th:block th:fragment="scripts">
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.2/dist/sockjs.min.js"></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
         
         <script type="text/javascript">
             $(function (){
+                var canvasEl = document.createElement("canvas");
+                $(canvasEl).attr("id", "deviceTelemetryChart")
+                    .attr("width", 600)
+                    .attr("height", 480)
+                    .width(600)
+                    .height(480)
+                    .appendTo($("#messageBox"));
+
+                var canvas = canvasEl.getContext("2d");
+                var telemetryChart = new Chart(canvas, {
+                    type: "line",
+                    data: {
+                        labels: new Array(20),
+                        datasets: [
+                            {
+                                label: "Temperature",
+                                data: new Array(20),
+                                borderColor: "#4dccf6",
+                                //backgroundColor: "#eeeeee",
+                                //fill: false,
+                                //cubicInterpolationMode: 'monotone',
+                                //tension: 0.3
+                            },
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: "top",
+                            },
+                            title: {
+                                display: true,
+                                text: "Device Telemetry"
+                            }
+                        },
+                        scales: {
+                            x: {
+                                display: true,
+                                title: {
+                                    display: true,
+                                    text: "Message Id"
+                                }
+                            },
+                            y: {
+                                display: true,
+                                title: {
+                                    display: true,
+                                    text: "Value"
+                                },
+                                suggestedMin: 0,
+                                suggestedMax: 80
+                            }
+                        },
+                    },
+                });
+                
+                telemetryChart.data.labels.fill("");
+                telemetryChart.data.datasets[0].data.fill(0);
+
                 var ws = new SockJS("/ws_sockjs");
                 ws.onopen = () => {
                     console.log("connected.");
                     ws.send("hello");
                 }
                 ws.onmessage = e => {
+                    var msg = JSON.parse(e.data);
+                    var date = new Date();
+                    telemetryChart.data.labels.push(/*date.getTime()*/msg.messageId);
+                    telemetryChart.data.datasets[0].data.push(msg.temperature);
+                    if (telemetryChart.data.labels.length > 20) {
+                        telemetryChart.data.labels.shift();
+                        telemetryChart.data.datasets[0].data.shift();
+                    }
+
+                    telemetryChart.update();
+                    
                     console.log("message: " + e.data);
                 }
                 ws.onclose = () => {
                     console.log("closed");
                 }
+
                 /*
                 var ws = new SockJS("/ws-broker");
                 stompClient = Stomp.over(ws);
