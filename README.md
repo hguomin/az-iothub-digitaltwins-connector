@@ -5,7 +5,13 @@ A demo project that shows how to build a Azure IoT and Digital Twins connected s
 ## Build from source
 ### Clone source code from this repo  
 ```bash 
-git clone https://github.com/hguomin/az-iothub-digitaltwins-connector.git
+$ git clone https://github.com/hguomin/az-iothub-digitaltwins-connector.git
+$ git submodule update --init --recursive
+```
+### Install dependencies 
+```bash
+$ cd libs/spring-cloud-stream-binder-websocket
+$ ./mvnw install -DskipTests
 ```
 
 ### Make your application settings

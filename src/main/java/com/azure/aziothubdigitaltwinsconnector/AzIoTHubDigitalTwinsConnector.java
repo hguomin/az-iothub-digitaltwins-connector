@@ -5,6 +5,7 @@
 
 package com.azure.aziothubdigitaltwinsconnector;
 
+import com.azure.aziothubdigitaltwinsconnector.messaging.websocket.WebSocketHub;
 import com.azure.core.models.JsonPatchDocument;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ReadContext;
@@ -17,16 +18,17 @@ import org.springframework.context.annotation.Bean;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import com.azure.digitaltwins.core.DigitalTwinsClient;
 import org.springframework.messaging.Message;
+import rx.Producer;
 
 @SpringBootApplication
 public class AzIoTHubDigitalTwinsConnector {
-
     private Logger log = LoggerFactory.getLogger(AzIoTHubDigitalTwinsConnector.class);
-
     private final ReadContext mapping;
+
     public AzIoTHubDigitalTwinsConnector() {
         this.mapping = JsonPath.parse("{ \"twinId\": \"${$.deviceId}\",\"version\": 5, \"mappings\": { \"Telemetry\": { \"temperature\": \"${$.temperature}\"}, \"Property\": {\"avgTemperature\": \"${$.temperature}\"}}}");
     }
@@ -86,9 +88,10 @@ public class AzIoTHubDigitalTwinsConnector {
     }
 
     @Bean
-    public Consumer<String> deviceTelemetryReceiver() {
+    public Consumer<String> deviceTelemetryReceiver(WebSocketHub wsHub) {
         return message -> {
             System.out.println("Azure IoT Hub: " + message);
+            wsHub.sendEvent(message);
         };
     }
 
@@ -96,12 +99,6 @@ public class AzIoTHubDigitalTwinsConnector {
     public Consumer<Message<String>> adtEventsOuputReceiver() {
         return message -> {
             System.out.println("Azure Digital Twins - Event Routed: " + message.getPayload());
-        };
-    }
-
-    @Bean Consumer<Message<String>> websocketTest() {
-        return message -> {
-            log.debug("Websocket message received: ", message.getPayload());
         };
     }
 }

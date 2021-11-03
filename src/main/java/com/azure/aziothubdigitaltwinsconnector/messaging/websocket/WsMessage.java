@@ -11,4 +11,8 @@ public class WsMessage {
     public void setId(String id) {
         this.id = id;
     }
+
+    public static class WebSocketMessageBrokerConfiguration {
+
+    }
 }

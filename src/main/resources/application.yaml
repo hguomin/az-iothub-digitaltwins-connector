@@ -63,6 +63,14 @@ spring:
           binder: websocket
           destination: websocket
 
+        websocketMessages-out-0:
+          binder: websocket
+          destination: websocket
+
+  integration:
+    poller:
+      fixed-delay: 2  #interval for the poller to call message producer
+
     websocket:
       endpoint: /ws
   thymeleaf:
