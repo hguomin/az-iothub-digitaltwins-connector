@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Bean;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.azure.digitaltwins.core.DigitalTwinsClient;
@@ -96,9 +97,32 @@ public class AzIoTHubDigitalTwinsConnector {
     }
 
     @Bean
-    public Consumer<Message<String>> adtEventsOuputReceiver() {
+    public Function<Message<String>, String> adtRoutedEventsProcessor() {
         return message -> {
-            System.out.println("Azure Digital Twins - Event Routed: " + message.getPayload());
+            System.out.println("Azure Digital Twins - adtRoutedEventsProcessor: " + message.getPayload());
+            String eventType = message.getHeaders().get("ce-type", String.class);
+            String eventSource = message.getHeaders().get("ce-source", String.class);
+            String twinId = "";
+            switch (eventType) {
+                case "microsoft.iot.telemetry": {
+                    int index = StringUtils.lastIndexOf(eventSource, "/");
+                    twinId = eventSource.substring(index+1);
+                }break;
+                case "Microsoft.DigitalTwins.Twin.Update": {
+                    twinId = message.getHeaders().get("ce-subject", String.class);
+                }break;
+                default: break;
+            }
+            String newMsg = "{ \"twinId\": \"" + twinId + "\", \"body\": " + message.getPayload() + "}";
+
+            return newMsg;
+        };
+    }
+
+    @Bean
+    public Consumer<Message<String>> adtVisualEventsReceiver() {
+        return message -> {
+            System.out.println("Azure Digital Twins - adtVisualEventsReceiver: " + message.getPayload());
         };
     }
 }

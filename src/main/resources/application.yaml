@@ -30,18 +30,30 @@ spring:
                     checkpoint-storage-account: gmdtstorage #storage account name
                     checkpoint-access-key: [storage account access key]
                     checkpoint-container: dtevtroutehubcheckpoints #storage container name
+        adt-visualization-eventhub:
+          type: eventhub
+          default-candidate: false
+          environment:
+            spring:
+              cloud:
+                azure:
+                  eventhub:
+                    connection-string: [event hub connection string]
+                    checkpoint-storage-account: gmdtstorage #storage account name
+                    checkpoint-access-key: [storage account access key]
+                    checkpoint-container: dtevtvisualhubcheckpoints #storage container name
         websocket:
           type: websocket
           default-candidate: false
-        #  environment:
+          #  environment:
           #  spring:
           #    cloud:
           #      websocket:
           #        endpoint: /ws
-                
+
       #Functions
       function:
-        definition: websocketTest;receive;deviceTelemetryReceiver;adtEventsOuputReceiver;
+        definition: websocketTest;websocketMessages;receive;deviceTelemetryReceiver;adtRoutedEventsProcessor;adtVisualEventsReceiver
       #Channels
       bindings:
         receive-in-0:
@@ -54,9 +66,21 @@ spring:
           destination: gm-dt-iothub #iot/event hub name
           group: telemetry
 
-        adtEventsOuputReceiver-in-0:
+        # receive adt routed events
+        adtRoutedEventsProcessor-in-0:
           binder: adt-event-route-eventhub
           destination: gmdtevtroutehub #event hub name
+          group: $Default
+
+        # send processed events for visualization
+        adtRoutedEventsProcessor-out-0:
+          binder: adt-visualization-eventhub
+          destination: gm-dt-visual-hub #event hub name
+          content-type: application/json
+
+        adtVisualEventsReceiver-in-0:
+          binder: adt-visualization-eventhub
+          destination: gm-dt-visual-hub #event hub name
           group: $Default
 
         websocketTest-in-0:
@@ -67,15 +91,13 @@ spring:
           binder: websocket
           destination: websocket
 
+    websocket:
+      endpoint: /ws
   integration:
     poller:
       fixed-delay: 2  #interval for the poller to call message producer
-
-    websocket:
-      endpoint: /ws
   thymeleaf:
     cache: false
-
 azure:
   digital-twins:
     tenant-id: [aad tenant id]
