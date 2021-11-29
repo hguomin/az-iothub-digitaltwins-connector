@@ -6,6 +6,7 @@
 package com.azure.aziothubdigitaltwinsconnector;
 
 import com.azure.aziothubdigitaltwinsconnector.messaging.websocket.WebSocketHub;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.models.JsonPatchDocument;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ReadContext;
@@ -21,9 +22,9 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import com.azure.digitaltwins.core.BasicRelationship;
 import com.azure.digitaltwins.core.DigitalTwinsClient;
 import org.springframework.messaging.Message;
-import rx.Producer;
 
 @SpringBootApplication
 public class AzIoTHubDigitalTwinsConnector {
@@ -97,7 +98,7 @@ public class AzIoTHubDigitalTwinsConnector {
     }
 
     @Bean
-    public Function<Message<String>, String> adtRoutedEventsProcessor() {
+    public Function<Message<String>, String> adtRoutedEventsProcessor(DigitalTwinsClient digitalTwinsClient) {
         return message -> {
             System.out.println("Azure Digital Twins - adtRoutedEventsProcessor: " + message.getPayload());
             String eventType = message.getHeaders().get("ce-type", String.class);
@@ -107,6 +108,16 @@ public class AzIoTHubDigitalTwinsConnector {
                 case "microsoft.iot.telemetry": {
                     int index = StringUtils.lastIndexOf(eventSource, "/");
                     twinId = eventSource.substring(index+1);
+
+                    //Update parent entity properties
+                    PagedIterable<BasicRelationship> relShips = digitalTwinsClient.listRelationships(twinId,BasicRelationship.class);
+                    ReadContext msgCtx = JsonPath.parse(message.getPayload());
+                    for (BasicRelationship rel: relShips) {
+                        Object data = msgCtx.read("$.temperature");
+                        JsonPatchDocument propOp = new JsonPatchDocument();
+                        propOp.appendReplace("/Temperature", data);
+                        digitalTwinsClient.updateDigitalTwin(rel.getTargetId(), propOp);
+                    }
                 }break;
                 case "Microsoft.DigitalTwins.Twin.Update": {
                     twinId = message.getHeaders().get("ce-subject", String.class);
