@@ -7,10 +7,10 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "clean": "rm dist/bundle.js",
+    "clean": "rm -rf ./target/generated-resources/static/portal",
     "build-dev": "webpack --mode development",
     "build-prod": "webpack --mode production",
-    "serve": "webpack serve --open --static ./dist/static/portal --no-stats"
+    "serve": "webpack serve --open --static ./target/generated-resources/static/portal --no-stats"
   },
   "dependencies": {
     "@antv/x6": "^1.31.3",

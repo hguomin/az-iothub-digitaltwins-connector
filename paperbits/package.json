@@ -14,9 +14,9 @@
         "build-designer": "webpack --config webpack.designer.js",
         "build-publisher": "webpack --config webpack.publisher.js",
         "build-runtime": "webpack --config webpack.runtime.js",
-        "publish": "webpack --config webpack.publisher.js && node dist/publisher/index.js && npm run serve-website",
-        "serve-website": "webpack serve --open --static ./dist/website --no-stats",
-        "serve-designer": "webpack serve --open --static ./dist/designer --no-stats"
+        "publish": "webpack --config webpack.publisher.js && node target/generated-resources/static/publisher/index.js && npm run serve-website",
+        "serve-website": "webpack serve --open --static ./target/generated-resources/static/website --no-stats",
+        "serve-designer": "webpack serve --open --static ./target/generated-resources/static/designer --no-stats"
     },
     "devDependencies": {
         "@types/google.maps": "^3.47.4",
