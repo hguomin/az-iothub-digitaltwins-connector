@@ -11,8 +11,6 @@ import com.azure.core.models.JsonPatchDocument;
 import com.jayway.jsonpath.JsonPath;
 import com.jayway.jsonpath.ReadContext;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
@@ -20,7 +18,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import com.azure.digitaltwins.core.BasicRelationship;
 import com.azure.digitaltwins.core.DigitalTwinsClient;
@@ -28,7 +25,7 @@ import org.springframework.messaging.Message;
 
 @SpringBootApplication
 public class AzIoTHubDigitalTwinsConnector {
-    private Logger log = LoggerFactory.getLogger(AzIoTHubDigitalTwinsConnector.class);
+    //private Logger log = LoggerFactory.getLogger(AzIoTHubDigitalTwinsConnector.class);
     private final ReadContext mapping;
 
     public AzIoTHubDigitalTwinsConnector() {
