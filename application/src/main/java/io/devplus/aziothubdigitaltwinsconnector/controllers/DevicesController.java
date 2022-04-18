@@ -1,4 +1,4 @@
-package com.azure.aziothubdigitaltwinsconnector.controllers;
+package io.devplus.aziothubdigitaltwinsconnector.controllers;
 
 import com.microsoft.azure.sdk.iot.service.Device;
 import com.microsoft.azure.sdk.iot.service.IotHubConnectionString;

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 // 09/29/2021
 
-package com.azure.aziothubdigitaltwinsconnector;
+package io.devplus.aziothubdigitaltwinsconnector;
 
 import com.azure.digitaltwins.core.DigitalTwinsClient;
 import com.azure.digitaltwins.core.DigitalTwinsClientBuilder;

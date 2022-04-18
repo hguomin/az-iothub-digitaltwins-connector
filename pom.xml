@@ -10,7 +10,7 @@
 	<relativePath/> <!-- lookup parent from repository -->
   </parent>
   
-  <groupId>com.azure</groupId>
+  <groupId>io.devplus</groupId>
   <artifactId>az-iothub-digitaltwins-connector</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>

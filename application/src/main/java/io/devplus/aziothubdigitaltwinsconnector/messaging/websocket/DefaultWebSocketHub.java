@@ -1,4 +1,4 @@
-package com.azure.aziothubdigitaltwinsconnector.messaging.websocket;
+package io.devplus.aziothubdigitaltwinsconnector.messaging.websocket;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

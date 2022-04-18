@@ -1,6 +1,6 @@
-package com.azure.aziothubdigitaltwinsconnector.controllers;
+package io.devplus.aziothubdigitaltwinsconnector.controllers;
 
-import com.azure.aziothubdigitaltwinsconnector.AzIothubDigitaltwinsConnectorApplication;
+import io.devplus.aziothubdigitaltwinsconnector.AzIothubDigitaltwinsConnectorApplication;
 import com.azure.digitaltwins.core.DigitalTwinsClient;
 import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
 

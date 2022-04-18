@@ -1,7 +1,7 @@
 //
 //Guomin Huang @07/10/2021
 //
-package com.azure.aziothubdigitaltwinsconnector;
+package io.devplus.aziothubdigitaltwinsconnector;
 
 import com.microsoft.azure.sdk.iot.service.devicetwin.DeviceTwin;
 import com.microsoft.azure.sdk.iot.service.devicetwin.DeviceMethod;

@@ -1,4 +1,4 @@
-package com.azure.aziothubdigitaltwinsconnector.controllers;
+package io.devplus.aziothubdigitaltwinsconnector.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

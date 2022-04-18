@@ -1,5 +1,5 @@
 //Guomin Huang @16/10/2021
-package com.azure.aziothubdigitaltwinsconnector.messaging.websocket;
+package io.devplus.aziothubdigitaltwinsconnector.messaging.websocket;
 
 public class WsMessage {
     private String id;

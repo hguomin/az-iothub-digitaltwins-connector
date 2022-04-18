@@ -1,6 +1,6 @@
 //Guomin Huang @11/10/2021
 //
-package com.azure.aziothubdigitaltwinsconnector.webapp;
+package io.devplus.aziothubdigitaltwinsconnector.webapp;
 
 import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.HandlerInterceptor;

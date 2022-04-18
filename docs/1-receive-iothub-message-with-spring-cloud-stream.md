@@ -12,7 +12,7 @@ Add Azure Event Hub binder dependency to pom.xml
 
 ## Add IoT Hub message receiver code
 ```java
-package com.azure.aziothubdigitaltwinsconnector;
+package io.devplus.aziothubdigitaltwinsconnector;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

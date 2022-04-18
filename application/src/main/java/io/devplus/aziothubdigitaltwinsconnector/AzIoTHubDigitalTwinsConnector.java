@@ -3,9 +3,9 @@
 // Licensed under the MIT License.
 // 09/29/2021
 
-package com.azure.aziothubdigitaltwinsconnector;
+package io.devplus.aziothubdigitaltwinsconnector;
 
-import com.azure.aziothubdigitaltwinsconnector.messaging.websocket.WebSocketHub;
+import io.devplus.aziothubdigitaltwinsconnector.messaging.websocket.WebSocketHub;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.models.JsonPatchDocument;
 import com.jayway.jsonpath.JsonPath;
