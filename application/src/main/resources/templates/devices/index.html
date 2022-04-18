@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Device Management</title>
+
+</head>
+<body>
+    <div th:fragment="content" id="content" class="flex flex-col flex-auto bg-gray-100">
+        <div id="device-list" class="flex px-4 py-4">
+            <table class="border border-collapse border-slate-400 w-full text-sm shadow-sm">
+                <thead>
+                    <th class="border border-slate-300 font-semibold text-left px-4 py-3">Device Name</th>
+                    <th class="border border-slate-300 font-semibold text-left px-4 py-3">Status</th>
+                    <th class="border border-slate-300 font-semibold text-left px-4 py-3">Action</th>
+                </thead>
+                <tbody>
+                    <tr th:each="d : ${deviceList}">
+                        <td class="border border-slate-300 text-slate-600 text-left text-sky-500 px-4 py-2 w-60" th:text="${d.deviceId}"></td>
+                        <td class="border border-slate-300 text-slate-600 text-left px-4 py-2 w-60" th:text="${d.connectionState}">Connected</td>
+                        <td class="border border-slate-300 text-slate-600 text-left text-sky-500 px-4 py-2">
+                            <a th:href="@{/devices/${d.deviceId}/telemetry}">View Telemetry</a>
+                            <span class="px-2">|</span>
+                            <a th:href="@{/devices/${d.deviceId}/method}">Invoke Method</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+</body>
+</html>
